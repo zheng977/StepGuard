@@ -21,6 +21,10 @@ and unsafe-step localization.
 
 ---
 
+<p align="center">
+  <img src="assets/stepguard_overview.png" width="960" alt="StepGuard training pipeline: prefix-aligned SFT followed by Balance-GRPO calibration"/>
+</p>
+
 ## 🔍 Overview
 
 - **Step-level guarding**: inspect a proposed tool action in its execution
@@ -32,6 +36,10 @@ and unsafe-step localization.
   coverage.
 - **Safety-utility calibration**: Balance-GRPO reweights GRPO advantages using
   class-count imbalance and the observed safe/unsafe accuracy gap.
+
+<p align="center">
+  <img src="assets/step_level_guarding_motivation.png" width="780" alt="Why a trajectory-level guard cannot intervene before an injected unsafe action"/>
+</p>
 
 ## 🤗 Model Zoo and Release Status
 
