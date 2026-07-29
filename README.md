@@ -22,7 +22,7 @@ and unsafe-step localization.
 ---
 
 <p align="center">
-  <img src="assets/stepguard_overview.png" width="960" alt="StepGuard training pipeline: prefix-aligned SFT followed by Balance-GRPO calibration"/>
+  <img src="assets/step_level_guarding_motivation.png" width="780" alt="Why a trajectory-level guard cannot intervene before an injected unsafe action"/>
 </p>
 
 ## 🔍 Overview
@@ -38,7 +38,7 @@ and unsafe-step localization.
   class-count imbalance and the observed safe/unsafe accuracy gap.
 
 <p align="center">
-  <img src="assets/step_level_guarding_motivation.png" width="780" alt="Why a trajectory-level guard cannot intervene before an injected unsafe action"/>
+  <img src="assets/stepguard_overview.png" width="960" alt="StepGuard training pipeline: prefix-aligned SFT followed by Balance-GRPO calibration"/>
 </p>
 
 ## 🤗 Model Zoo and Release Status
@@ -49,6 +49,16 @@ and unsafe-step localization.
 | StepGuard-RL-4B | [Hugging Face](https://huggingface.co/ninty-seven/stepguard-rl-4b) | Released |
 | SFT-3K / RL-4K corpus | -- | Planned |
 | StepGen data-generation engine | -- | Planned |
+
+## 📊 Main Results
+
+StepGuard-4B achieves the strongest average step-level accuracy among the
+evaluated open-weight guard models while remaining competitive on
+trajectory-level diagnosis.
+
+<p align="center">
+  <img src="assets/static_evaluation_results.png" width="1000" alt="Static trajectory-level and step-level safety evaluation results"/>
+</p>
 
 ## 📁 Repository Structure
 
