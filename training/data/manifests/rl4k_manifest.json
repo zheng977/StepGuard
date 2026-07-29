@@ -1,0 +1,146 @@
+{
+  "name": "agentguard_rl4k",
+  "rows": 4000,
+  "targets": {
+    "action/pure_benign": 300,
+    "action/adversarial_safe": 700,
+    "action/adversarial_unsafe": 1000,
+    "trajectory/pure_benign": 300,
+    "trajectory/adversarial_safe": 700,
+    "trajectory/adversarial_unsafe": 1000
+  },
+  "pool_stats": {
+    "quality_score23": {
+      "usable": 7115,
+      "raw": 9799
+    },
+    "relabel_raw": {
+      "usable": 7496,
+      "raw": 15000
+    },
+    "v3_intent_cf": {
+      "usable": 2390,
+      "raw": 2494
+    },
+    "pure_benign": {
+      "usable": 17910,
+      "raw": 11334
+    }
+  },
+  "preselect_report": {
+    "action/unsafe/malicious_user_instruction_or_jailbreak/v3_intent_cf": {
+      "target": 320,
+      "available": 223,
+      "selected": 223
+    },
+    "action/safe/none/v3_intent_cf": {
+      "target": 80,
+      "available": 972,
+      "selected": 80
+    },
+    "trajectory/unsafe/malicious_user_instruction_or_jailbreak/v3_intent_cf_converted_traj": {
+      "target": 320,
+      "available": 223,
+      "selected": 223
+    },
+    "action/safe/none/pure_benign": {
+      "target": 160,
+      "available": 8525,
+      "selected": 160
+    },
+    "trajectory/safe/none/pure_benign_converted_traj": {
+      "target": 200,
+      "available": 8955,
+      "selected": 200
+    }
+  },
+  "counts": {
+    "total": 4000,
+    "level": {
+      "action": 2000,
+      "trajectory": 2000
+    },
+    "label": {
+      "unsafe": 2000,
+      "safe": 2000
+    },
+    "family": {
+      "adversarial_unsafe": 2000,
+      "adversarial_safe": 1400,
+      "pure_benign": 600
+    },
+    "risk_source": {
+      "none": 600,
+      "corrupted_tool_feedback": 564,
+      "indirect_prompt_injection": 564,
+      "malicious_user_instruction_or_jailbreak": 446,
+      "direct_prompt_injection": 441,
+      "unreliable_or_misinformation": 432,
+      "malicious_tool_execution": 413,
+      "inherent_agent_failure": 273,
+      "tool_description_injection": 267
+    },
+    "source_pool": {
+      "quality_score23": 2101,
+      "relabel_raw": 877,
+      "v3_intent_cf": 305,
+      "pure_benign_converted_traj": 292,
+      "v3_intent_cf_converted_traj": 231,
+      "pure_benign": 194
+    },
+    "level_label": {
+      "action/safe": 1000,
+      "action/unsafe": 1000,
+      "trajectory/safe": 1000,
+      "trajectory/unsafe": 1000
+    },
+    "level_family": {
+      "action/adversarial_safe": 700,
+      "action/adversarial_unsafe": 1000,
+      "action/pure_benign": 300,
+      "trajectory/adversarial_safe": 700,
+      "trajectory/adversarial_unsafe": 1000,
+      "trajectory/pure_benign": 300
+    },
+    "level_label_risk_source": {
+      "action/safe/corrupted_tool_feedback": 106,
+      "action/safe/direct_prompt_injection": 106,
+      "action/safe/indirect_prompt_injection": 106,
+      "action/safe/inherent_agent_failure": 65,
+      "action/safe/malicious_tool_execution": 106,
+      "action/safe/none": 300,
+      "action/safe/tool_description_injection": 106,
+      "action/safe/unreliable_or_misinformation": 105,
+      "action/unsafe/corrupted_tool_feedback": 113,
+      "action/unsafe/direct_prompt_injection": 113,
+      "action/unsafe/indirect_prompt_injection": 113,
+      "action/unsafe/inherent_agent_failure": 100,
+      "action/unsafe/malicious_tool_execution": 113,
+      "action/unsafe/malicious_user_instruction_or_jailbreak": 223,
+      "action/unsafe/tool_description_injection": 112,
+      "action/unsafe/unreliable_or_misinformation": 113,
+      "trajectory/safe/corrupted_tool_feedback": 158,
+      "trajectory/safe/direct_prompt_injection": 157,
+      "trajectory/safe/indirect_prompt_injection": 158,
+      "trajectory/safe/inherent_agent_failure": 16,
+      "trajectory/safe/malicious_tool_execution": 7,
+      "trajectory/safe/none": 300,
+      "trajectory/safe/tool_description_injection": 46,
+      "trajectory/safe/unreliable_or_misinformation": 158,
+      "trajectory/unsafe/corrupted_tool_feedback": 187,
+      "trajectory/unsafe/direct_prompt_injection": 65,
+      "trajectory/unsafe/indirect_prompt_injection": 187,
+      "trajectory/unsafe/inherent_agent_failure": 92,
+      "trajectory/unsafe/malicious_tool_execution": 187,
+      "trajectory/unsafe/malicious_user_instruction_or_jailbreak": 223,
+      "trajectory/unsafe/tool_description_injection": 3,
+      "trajectory/unsafe/unreliable_or_misinformation": 56
+    }
+  },
+  "quality_checks": {
+    "oracle_supervision_leaks": 0,
+    "correct_label_leaks": 0,
+    "unique_prompt_hashes": 4000
+  },
+  "release_note": "Paths were removed from the public manifest. See docs/experiments/current_data.md for internal full-data registry."
+}

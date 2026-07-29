@@ -1,0 +1,78 @@
+# Multi-benchmark static eval suite.
+#
+# This config shares one model matrix across several static benchmarks. The
+# runner starts each vLLM model once, runs all selected benchmarks, then stops it.
+#
+# Run:
+#   export AGENTGUARD_MODEL_PATH=/path/to/hf/checkpoint
+#   CUDA_VISIBLE_DEVICES=0,1 \
+#   python scripts/eval/run_eval_suite.py \
+#     --config configs/eval_suites/static_core.example.yaml
+#
+# Dry-run / command check:
+#   python scripts/eval/run_eval_suite.py --config configs/eval_suites/static_core.example.yaml --dry-run
+
+name: static_core_example
+output_root: results/static_core_example
+
+defaults:
+  temperature: 0.0
+  max_tokens: 4096
+  timeout: 120
+  concurrency: 64
+
+benchmarks:
+  - name: ts_bench_all
+    benchmark: ts_bench
+    input: benchmarks/ts_bench
+    ts_subset: all
+    prompt_name: stepguard
+    response_parser: stepguard
+    concurrency: 100
+
+  - name: atbench_pro_traj
+    benchmark: atbench_pro_traj
+    input: benchmarks/atbench_pro/ATbench-Pro.json
+    prompt_name: stepguard_traj
+    response_parser: stepguard_traj
+
+  - name: rjudge
+    benchmark: rjudge
+    input: benchmarks/rjudge/test.json
+    prompt_name: stepguard_traj
+    response_parser: stepguard_traj
+
+  - name: agentsafety
+    benchmark: agentsafety
+    input: benchmarks/agentsafety/test.json
+    prompt_name: stepguard_traj
+    response_parser: stepguard_traj
+
+  - name: assebench_safety
+    benchmark: assebench
+    input: benchmark-repos/AgentAuditor-ASSEBench/ASSEBench/dataset/AgentJudge-safety.json
+    prompt_name: stepguard_traj
+    response_parser: stepguard_traj
+
+  - name: assebench_security
+    benchmark: assebench
+    input: benchmark-repos/AgentAuditor-ASSEBench/ASSEBench/dataset/AgentJudge-security.json
+    prompt_name: stepguard_traj
+    response_parser: stepguard_traj
+
+api_models: []
+
+vllm_defaults:
+  api_key: EMPTY
+  host: 127.0.0.1
+  port: 18000
+  startup_timeout: 900
+  max_model_len: 32768
+  dtype: auto
+
+vllm_models:
+  - name: qwen3-4b-guard-example
+    model: qwen3-4b-guard-example
+    model_path: ${AGENTGUARD_MODEL_PATH}
+    tensor_parallel_size: 2
+    gpu_memory_utilization: 0.9

@@ -1,0 +1,164 @@
+{
+  "name": "agentguard_sft3k",
+  "stage": "sample_agentguard_paper_sft_distilled_3k",
+  "rows": 3000,
+  "seed": 20260521,
+  "targets": {
+    "total": 3000,
+    "safe": 1500,
+    "unsafe": 1500,
+    "pure_benign_none": 300,
+    "nonnone_safe": 1200,
+    "nonnone_unsafe": 1500,
+    "level_action_soft_target": 1500,
+    "level_trajectory_soft_target": 1500,
+    "priority": [
+      "low current risk-source count",
+      "level soft target",
+      "sft3k_score23",
+      "quality_score_3",
+      "hard_case",
+      "shorter_raw_length"
+    ]
+  },
+  "summary": {
+    "total": 3000,
+    "sft3k_sample_bucket": {
+      "unreliable_or_misinformation_unsafe": 199,
+      "malicious_user_instruction_or_jailbreak_safe": 164,
+      "pure_benign_none": 300,
+      "direct_prompt_injection_unsafe": 199,
+      "inherent_agent_failure_unsafe": 200,
+      "malicious_tool_execution_unsafe": 200,
+      "indirect_prompt_injection_unsafe": 200,
+      "unreliable_or_misinformation_safe": 164,
+      "malicious_user_instruction_or_jailbreak_unsafe": 200,
+      "inherent_agent_failure_safe": 125,
+      "direct_prompt_injection_safe": 163,
+      "tool_description_injection_safe": 163,
+      "corrupted_tool_feedback_safe": 164,
+      "corrupted_tool_feedback_unsafe": 200,
+      "malicious_tool_execution_safe": 93,
+      "tool_description_injection_unsafe": 102,
+      "indirect_prompt_injection_safe": 164
+    },
+    "paper_pool_source": {
+      "None": 3000
+    },
+    "level": {
+      "trajectory": 1500,
+      "action": 1500
+    },
+    "label": {
+      "unsafe": 1500,
+      "safe": 1500
+    },
+    "risk_source": {
+      "unreliable_or_misinformation": 363,
+      "malicious_user_instruction_or_jailbreak": 364,
+      "none": 300,
+      "direct_prompt_injection": 362,
+      "inherent_agent_failure": 325,
+      "malicious_tool_execution": 293,
+      "indirect_prompt_injection": 364,
+      "tool_description_injection": 265,
+      "corrupted_tool_feedback": 364
+    },
+    "quality_score": {
+      "None": 3000
+    },
+    "source": {
+      "None": 3000
+    },
+    "sampling_family": {
+      "None": 3000
+    },
+    "is_hard_case": {
+      "None": 3000
+    },
+    "risk_source_safe_unsafe": {
+      "corrupted_tool_feedback": {
+        "safe": 164,
+        "unsafe": 200,
+        "total": 364,
+        "action_safe": 49,
+        "action_unsafe": 95,
+        "traj_safe": 115,
+        "traj_unsafe": 105
+      },
+      "direct_prompt_injection": {
+        "safe": 163,
+        "unsafe": 199,
+        "total": 362,
+        "action_safe": 107,
+        "action_unsafe": 115,
+        "traj_safe": 56,
+        "traj_unsafe": 84
+      },
+      "indirect_prompt_injection": {
+        "safe": 164,
+        "unsafe": 200,
+        "total": 364,
+        "action_safe": 50,
+        "action_unsafe": 86,
+        "traj_safe": 114,
+        "traj_unsafe": 114
+      },
+      "inherent_agent_failure": {
+        "safe": 125,
+        "unsafe": 200,
+        "total": 325,
+        "action_safe": 28,
+        "action_unsafe": 94,
+        "traj_safe": 97,
+        "traj_unsafe": 106
+      },
+      "malicious_tool_execution": {
+        "safe": 93,
+        "unsafe": 200,
+        "total": 293,
+        "action_safe": 67,
+        "action_unsafe": 129,
+        "traj_safe": 26,
+        "traj_unsafe": 71
+      },
+      "malicious_user_instruction_or_jailbreak": {
+        "safe": 164,
+        "unsafe": 200,
+        "total": 364,
+        "action_safe": 75,
+        "action_unsafe": 128,
+        "traj_safe": 89,
+        "traj_unsafe": 72
+      },
+      "none": {
+        "safe": 300,
+        "unsafe": 0,
+        "total": 300,
+        "action_safe": 300,
+        "action_unsafe": 0,
+        "traj_safe": 0,
+        "traj_unsafe": 0
+      },
+      "tool_description_injection": {
+        "safe": 163,
+        "unsafe": 102,
+        "total": 265,
+        "action_safe": 42,
+        "action_unsafe": 22,
+        "traj_safe": 121,
+        "traj_unsafe": 80
+      },
+      "unreliable_or_misinformation": {
+        "safe": 164,
+        "unsafe": 199,
+        "total": 363,
+        "action_safe": 32,
+        "action_unsafe": 81,
+        "traj_safe": 132,
+        "traj_unsafe": 118
+      }
+    }
+  },
+  "release_note": "Paths were removed from the public manifest. See docs/experiments/current_data.md for internal full-data registry."
+}

@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentguard"
+version = "0.1.0"
+description = "Structured agent guardrail framework"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "langchain>=0.3.0",
+  "langchain-core>=0.3.0",
+  "langchain-openai>=0.2.0",
+  "openai>=1.59.0",
+  "pydantic>=2.7.0",
+  "pyyaml>=6.0.1",
+  "tqdm>=4.66.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+]
+serve = [
+  "vllm>=0.6.0",
+]
+# SOCKS proxies (ALL_PROXY etc.) with OpenAI-compatible remote APIs need socksio.
+socks = [
+  "socksio>=1.0.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["ag_types", "orchestrator"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

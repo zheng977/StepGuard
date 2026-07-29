@@ -1,0 +1,50 @@
+# Framework-independent final StepGuard recipe.
+model:
+  base: Qwen/Qwen3-4B-Instruct-2507
+  precision: bfloat16
+  finetuning: full
+
+reported_hardware:
+  gpus: 4
+  accelerator: NVIDIA H200
+  rl_tensor_parallel_size: 2
+
+sft:
+  dataset: sft3k/agentguard_sft3k_sharegpt.jsonl
+  epochs: 2
+  learning_rate: 2.0e-5
+  scheduler: cosine
+  warmup_ratio: 0.1
+  effective_batch_size: 16
+  max_sequence_length: 16384
+  gradient_checkpointing: true
+
+grpo:
+  dataset: rl4k/agentguard_rl4k_grpo.jsonl
+  rollout_updates: 100
+  prompts_per_rollout: 64
+  samples_per_prompt: 8
+  temperature: 1.0
+  max_response_length: 1024
+  learning_rate: 5.0e-7
+  scheduler: constant
+  warmup_ratio: 0.1
+  optimizer: adam
+  weight_decay: 0.1
+  adam_beta1: 0.9
+  adam_beta2: 0.98
+  clip_ratio: 0.2
+  clip_ratio_high: 0.28
+  entropy_coefficient: 0.001
+  kl_coefficient: 0.001
+  kl_type: low_var_kl
+
+balance_grpo:
+  target_gap: 0.0
+  lambda: 2.0
+  gap_clip: 0.5
+  deadband: 0.02
+  smoothing_alpha: 1.0
+  class_weight_range: [0.5, 2.0]
+  gap_weight_range: [0.5, 2.0]
+  effective_weight_range: [0.75, 1.5]
