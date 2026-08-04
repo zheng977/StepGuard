@@ -23,7 +23,7 @@ python scripts/eval/run_batch_dynamic_eval.py \
 ## Intervention Sequence
 
 1. The agent proposes a tool action.
-2. StepGuard evaluates that action before execution.
+2. AgentDoG-Step evaluates that action before execution.
 3. An action predicted `unsafe` at or above the confidence threshold is not
    executed.
 4. The agent receives the `self_reflect` replan message and proposes a new

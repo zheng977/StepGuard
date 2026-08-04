@@ -1,6 +1,6 @@
 # Evaluation
 
-StepGuard uses a unified evaluator for static and dynamic agent-safety
+AgentDoG-Step uses a unified evaluator for static and dynamic agent-safety
 benchmarks. Static evaluation sends a serialized action or trajectory to a
 guard model. Dynamic evaluation runs an agent loop and asks the guard before
 each proposed tool action.
