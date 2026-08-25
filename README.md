@@ -1,25 +1,12 @@
-<div align="center">
+# StepGuard: Learning Step-Level Guardrails with Scalable Supervision and Safety-Utility Balancing
 
-# StepGuard
+<p align="center"><strong>EMNLP 2026</strong></p>
 
-### Learning Step-Level Guardrails with Scalable Supervision and Safety-Utility Balancing
-
-**Zhijie Zheng<sup>1,2,*</sup>, Yu Li<sup>1,3,*</sup>, Chen Qian<sup>1,4</sup>, Yuqian Fu<sup>5</sup>,<br>
-Yanwei Fu<sup>3</sup>, Lu Sheng<sup>2</sup>, Jing Shao<sup>1</sup>, Dongrui Liu<sup>1,†</sup>**
-
-<sup>1</sup>Shanghai AI Laboratory &nbsp; <sup>2</sup>Beihang University &nbsp;
-<sup>3</sup>Fudan University &nbsp; <sup>4</sup>Renmin University of China &nbsp;
-<sup>5</sup>KAUST
-
-<sup>*</sup>Equal contribution &nbsp;&nbsp; <sup>†</sup>Corresponding author
-
-**EMNLP 2026**
-
-[![Project Page](https://img.shields.io/badge/Project-Page-4A90E2?style=for-the-badge)](https://zheng977.github.io/StepGuard/)
-[![Model](https://img.shields.io/badge/%F0%9F%A4%97-Hugging_Face-FFD21E?style=for-the-badge)](https://huggingface.co/ninty-seven/StepGuard)
-[![Code](https://img.shields.io/badge/GitHub-Code-181717?style=for-the-badge&logo=github)](https://github.com/zheng977/StepGuard)
-
-</div>
+<p align="center">
+  🌐 <a href="https://zheng977.github.io/StepGuard/">Project Page</a>
+  &nbsp;|&nbsp; 🤗 <a href="https://huggingface.co/ninty-seven/StepGuard">Model</a>
+  &nbsp;|&nbsp; 💻 <a href="https://github.com/zheng977/StepGuard">Code</a>
+</p>
 
 > **StepGuard** is a 4B guard model that checks tool actions before execution
 > and audits completed agent trajectories. It is trained with **StepGen** for
