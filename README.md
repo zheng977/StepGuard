@@ -8,12 +8,12 @@
 
 ## 📰 News
 
-- **[2026-08-04]** We release the AgentDoG-Step model and update the codebase,
-  evaluation configurations, and project page.
+- **[2026-08-25]** We release AgentDoG-Step, together with the model weights,
+  evaluation code, training recipe, and project page.
 
 ---
 
-Official implementation of **AgentDoG-Step**, a 4B predictive guardrail for
+Official implementation of **AgentDoG-Step**, a 4B step-level guard model for
 tool-using LLM agents. It checks candidate actions before execution and audits
 completed trajectories with structured safety judgments, risk-source diagnoses,
 and unsafe-step localization.
@@ -50,12 +50,26 @@ and unsafe-step localization.
 
 ## 📊 Main Results
 
-AgentDoG-Step achieves the strongest average step-level accuracy among the
-evaluated open-weight guard models while remaining competitive on
-trajectory-level diagnosis.
+### Safety evaluation
+
+AgentDoG-Step achieves the highest average accuracy among the evaluated
+open-weight guard models. Its trajectory-level average accuracy reaches
+**83.0**, matching GPT-5.4, while its step-level average accuracy reaches
+**84.8**, compared with **81.3** for GPT-5.4.
 
 <p align="center">
   <img src="assets/static_evaluation_results.png" width="1000" alt="Static trajectory-level and step-level safety evaluation results"/>
+</p>
+
+### Guarded-agent evaluation
+
+When guarding agents on AgentDojo and AgentDyn, AgentDoG-Step lowers mean ASR
+from **23.15%** without a guard to **5.25%**—a **17.9-point absolute reduction**
+and a **77.3% relative reduction**—while mean utility decreases by only
+**2.8 points**. It also obtains a **3.4** malicious score on AgentHarm.
+
+<p align="center">
+  <img src="assets/runtime_safety_utility.png" width="1000" alt="Runtime safety and utility trade-off on AgentDojo, AgentDyn, and AgentHarm"/>
 </p>
 
 ## 📁 Repository Structure
