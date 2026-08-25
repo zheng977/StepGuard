@@ -1,58 +1,66 @@
-# StepGuard: Learning Step-Level Guardrails with Scalable Supervision and Safety–Utility Balancing
+<div align="center">
 
-<p align="center"><strong>EMNLP 2026</strong></p>
+# StepGuard
 
-<p align="center">
-  🌐 <a href="https://zheng977.github.io/StepGuard/" target="_blank">Project Page</a>
-  | 💻 <a href="https://github.com/zheng977/StepGuard" target="_blank">Code</a>
-  | 🤗 <a href="https://huggingface.co/ninty-seven/StepGuard" target="_blank">Model</a>
-</p>
+### Learning Step-Level Guardrails with Scalable Supervision and Safety-Utility Balancing
 
-## 📰 News
+**Zhijie Zheng<sup>1,2,*</sup>, Yu Li<sup>1,3,*</sup>, Chen Qian<sup>1,4</sup>, Yuqian Fu<sup>5</sup>,<br>
+Yanwei Fu<sup>3</sup>, Lu Sheng<sup>2</sup>, Jing Shao<sup>1</sup>, Dongrui Liu<sup>1,†</sup>**
 
-- **[2026-08-25]** We release StepGuard, together with the model weights,
-  evaluation code, training recipe, and project page.
+<sup>1</sup>Shanghai AI Laboratory &nbsp; <sup>2</sup>Beihang University &nbsp;
+<sup>3</sup>Fudan University &nbsp; <sup>4</sup>Renmin University of China &nbsp;
+<sup>5</sup>KAUST
 
----
+<sup>*</sup>Equal contribution &nbsp;&nbsp; <sup>†</sup>Corresponding author
 
-Official implementation of **StepGuard**, a 4B step-level guard model for
-tool-using LLM agents. It checks candidate actions before execution and audits
-completed trajectories with structured safety judgments, risk-source diagnoses,
-and unsafe-step localization.
+**EMNLP 2026**
 
----
+[![Project Page](https://img.shields.io/badge/Project-Page-4A90E2?style=for-the-badge)](https://zheng977.github.io/StepGuard/)
+[![Model](https://img.shields.io/badge/%F0%9F%A4%97-Hugging_Face-FFD21E?style=for-the-badge)](https://huggingface.co/ninty-seven/StepGuard)
+[![Code](https://img.shields.io/badge/GitHub-Code-181717?style=for-the-badge&logo=github)](https://github.com/zheng977/StepGuard)
+
+</div>
+
+> **StepGuard** is a 4B guard model that checks tool actions before execution
+> and audits completed agent trajectories. It is trained with **StepGen** for
+> scalable step-level supervision and **Balance-GRPO** for balancing safety and
+> utility.
+
+## 🔥 News
+
+- **[2026-08-25]** StepGuard is released with model weights, evaluation code,
+  the training recipe, and the project page.
+- **[2026]** StepGuard is accepted to **EMNLP 2026**.
 
 <p align="center">
   <img src="assets/step_level_guarding_motivation.png" width="780" alt="Why a trajectory-level guard cannot intervene before an injected unsafe action"/>
 </p>
 
-## 🔍 Overview
+## ✨ Highlights
 
-- **Step-level guarding**: inspect a proposed tool action in its execution
-  context before the action is executed.
-- **Trajectory diagnosis**: audit a completed action-observation trajectory and
-  localize the unsafe action step when a risk is present.
-- **Prefix-aligned supervision**: StepGen constructs matched safe and unsafe
-  branches that differ at a controlled risk anchor, with benign tool-reuse
-  coverage.
-- **Safety-utility calibration**: Balance-GRPO reweights GRPO advantages using
-  class-count imbalance and the observed safe/unsafe accuracy gap.
+| Component | What it provides |
+|---|---|
+| **StepGuard** | One model for pre-execution action checking and post-execution trajectory auditing. |
+| **StepGen** | Prefix-aligned safe/unsafe trajectories with risky-step localization and benign tool reuse. |
+| **Balance-GRPO** | Dynamic advantage reweighting based on the observed safe/unsafe accuracy gap. |
+
+## 🧭 Method
 
 <p align="center">
   <img src="assets/stepguard_overview.png" width="960" alt="StepGuard training pipeline: prefix-aligned SFT followed by Balance-GRPO calibration"/>
 </p>
 
-## 🤗 Model Zoo and Release Status
+## 🤗 Model and Release Status
 
 | Artifact | Link | Status |
 |---|---|---|
-| StepGuard | [Hugging Face](https://huggingface.co/ninty-seven/StepGuard) | Released |
+| **StepGuard-4B** | [ninty-seven/StepGuard](https://huggingface.co/ninty-seven/StepGuard) | ✅ Released |
 | SFT-3K / RL-4K corpus | -- | Planned |
 | StepGen data-generation engine | -- | Planned |
 
 ## 📊 Main Results
 
-### Safety evaluation
+### Static safety evaluation
 
 StepGuard achieves the highest average accuracy among the evaluated
 open-weight guard models. Its trajectory-level average accuracy reaches
@@ -63,7 +71,7 @@ open-weight guard models. Its trajectory-level average accuracy reaches
   <img src="assets/static_evaluation_results.png" width="1000" alt="Static trajectory-level and step-level safety evaluation results"/>
 </p>
 
-### Guarded-agent evaluation
+### Runtime guarded-agent evaluation
 
 When guarding agents on AgentDojo and AgentDyn, StepGuard lowers mean ASR
 from **23.15%** without a guard to **5.25%**—a **17.9-point absolute reduction**
@@ -73,20 +81,6 @@ and a **77.3% relative reduction**—while mean utility decreases by only
 <p align="center">
   <img src="assets/runtime_safety_utility.png" width="1000" alt="Runtime safety and utility trade-off on AgentDojo, AgentDyn, and AgentHarm"/>
 </p>
-
-## 📁 Repository Structure
-
-```text
-StepGuard/
-├── src/                    # Guard inference, prompts, evaluators, and agent loop
-├── configs/                # Public static and dynamic evaluation templates
-├── scripts/eval/           # Static and dynamic evaluation entry points
-├── benchmarks/             # Local benchmark mount points; payloads are not redistributed
-├── benchmark-repos/        # Vendored third-party benchmark source dependencies
-├── training/release/       # SFT, GRPO, and Balance-GRPO reproduction assets
-├── docs-open/              # Public usage and reproduction documentation
-└── tests/                  # Unit and configuration smoke tests
-```
 
 ## 🚀 Quick Start
 
@@ -100,11 +94,16 @@ source .venv/bin/activate
 pip install -e .[dev,serve]
 
 pip install "huggingface_hub[cli]"
+```
+
+### 2. Download the model
+
+```bash
 huggingface-cli download ninty-seven/StepGuard \
   --local-dir "$PWD/artifacts/StepGuard"
 ```
 
-### 2. Prepare Benchmark Data
+### 3. Prepare benchmark data
 
 The repository includes evaluation adapters, configurations, and the source
 dependencies for dynamic benchmarks. Static benchmark payloads are not
@@ -112,7 +111,7 @@ redistributed: obtain them from their respective upstream projects and place
 them at the paths referenced by
 `configs/eval_suites/static_core.example.yaml`.
 
-### 3. Validate the Static Suite
+### 4. Validate the static suite
 
 ```bash
 python scripts/eval/run_eval_suite.py \
@@ -120,7 +119,7 @@ python scripts/eval/run_eval_suite.py \
   --dry-run
 ```
 
-### 4. Run Static Evaluation
+### 5. Run static evaluation
 
 ```bash
 export AGENTGUARD_MODEL_PATH="$PWD/artifacts/StepGuard"
@@ -172,7 +171,24 @@ inference and evaluation reproduction.
 - [Dynamic Evaluation Protocol](docs-open/dynamic_evaluation.md)
 - [Training and Balance-GRPO](docs-open/training.md)
 
-## 📄 Citation
+<details>
+<summary><b>Repository structure</b></summary>
+
+```text
+StepGuard/
+├── src/                    # Guard inference, prompts, evaluators, and agent loop
+├── configs/                # Static and dynamic evaluation templates
+├── scripts/eval/           # Evaluation entry points
+├── benchmarks/             # Local benchmark mount points
+├── benchmark-repos/        # Third-party benchmark source dependencies
+├── training/release/       # SFT, GRPO, and Balance-GRPO assets
+├── docs-open/              # Usage and reproduction documentation
+└── tests/                  # Unit and configuration smoke tests
+```
+
+</details>
+
+## 📑 Citation
 
 Citation metadata will be added with the public paper release. Until then,
 please cite the accompanying StepGuard paper and link to this repository.
