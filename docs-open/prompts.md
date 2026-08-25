@@ -1,6 +1,6 @@
 # Prompt Contract
 
-AgentDoG-Step exposes one released prompt family with two input modes. These are
+StepGuard exposes one released prompt family with two input modes. These are
 not separate prompt versions: they use the same safety policy and nine-label
 risk taxonomy, but their input serialization and required output fields differ.
 

@@ -1,6 +1,6 @@
 # Reproduction Guide
 
-This guide is the canonical path for reproducing AgentDoG-Step. It separates the
+This guide is the canonical path for reproducing StepGuard. It separates the
 three supported goals because they have different hardware and dependency
 requirements:
 
@@ -16,8 +16,8 @@ intermediate checkpoints, cluster launchers, or third-party training source.
 ## 1. Environment
 
 ```bash
-git clone https://github.com/zheng977/AgentDoG-Step.git
-cd AgentDoG-Step
+git clone https://github.com/zheng977/StepGuard.git
+cd StepGuard
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .[dev]
@@ -37,12 +37,12 @@ hardware may require smaller batch sizes or sequence lengths.
 
 ## 2. Download Released Checkpoints
 
-Download AgentDoG-Step from Hugging Face:
+Download StepGuard from Hugging Face:
 
 ```bash
 pip install "huggingface_hub[cli]"
-huggingface-cli download ninty-seven/AgentDoG-Step \
-  --local-dir "$PWD/artifacts/AgentDoG-Step"
+huggingface-cli download ninty-seven/StepGuard \
+  --local-dir "$PWD/artifacts/StepGuard"
 ```
 
 The following data layout will apply after the planned corpus release:

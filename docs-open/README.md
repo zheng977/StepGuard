@@ -1,6 +1,6 @@
-# AgentDoG-Step Documentation
+# StepGuard Documentation
 
-This directory is the public documentation surface for AgentDoG-Step. It describes
+This directory is the public documentation surface for StepGuard. It describes
 the released model interface, evaluation entry points, and training recipe.
 Internal experiment notes, cluster paths, intermediate checkpoints, and
 unreleased data-generation assets are intentionally excluded.
@@ -12,7 +12,7 @@ unreleased data-generation assets are intentionally excluded.
 2. [Quickstart](quickstart.md): install the package and run an action-level or
    trajectory-level guard evaluation.
 3. [Prompt Contract](prompts.md): the two modes in the single released
-   AgentDoG-Step prompt family and their exact output schema.
+   StepGuard prompt family and their exact output schema.
 4. [Evaluation](evaluation.md): static and dynamic evaluation entry points,
    benchmark mapping, and result artifacts.
 5. [Dynamic Protocol](dynamic_evaluation.md): the paper's self-reflect
@@ -26,7 +26,7 @@ follow-up release.
 
 ## Scope
 
-AgentDoG-Step is a predictive guardrail for tool-using agents. It classifies either
+StepGuard is a predictive guardrail for tool-using agents. It classifies either
 the current action or a completed action-observation trajectory as `safe` or
 `unsafe`, diagnoses the relevant risk source, and, for a trajectory, identifies
 the unsafe agent-action step.

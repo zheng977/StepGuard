@@ -1,19 +1,21 @@
-# AgentDoG-Step
+# StepGuard: Learning Step-Level Guardrails with Scalable Supervision and Safety–Utility Balancing
+
+<p align="center"><strong>EMNLP 2026</strong></p>
 
 <p align="center">
-  🌐 <a href="https://zheng977.github.io/AgentDoG-Step/" target="_blank">Project Page</a>
-  | 💻 <a href="https://github.com/zheng977/AgentDoG-Step" target="_blank">Code</a>
-  | 🤗 <a href="https://huggingface.co/ninty-seven/AgentDoG-Step" target="_blank">Model</a>
+  🌐 <a href="https://zheng977.github.io/StepGuard/" target="_blank">Project Page</a>
+  | 💻 <a href="https://github.com/zheng977/StepGuard" target="_blank">Code</a>
+  | 🤗 <a href="https://huggingface.co/ninty-seven/StepGuard" target="_blank">Model</a>
 </p>
 
 ## 📰 News
 
-- **[2026-08-25]** We release AgentDoG-Step, together with the model weights,
+- **[2026-08-25]** We release StepGuard, together with the model weights,
   evaluation code, training recipe, and project page.
 
 ---
 
-Official implementation of **AgentDoG-Step**, a 4B step-level guard model for
+Official implementation of **StepGuard**, a 4B step-level guard model for
 tool-using LLM agents. It checks candidate actions before execution and audits
 completed trajectories with structured safety judgments, risk-source diagnoses,
 and unsafe-step localization.
@@ -37,14 +39,14 @@ and unsafe-step localization.
   class-count imbalance and the observed safe/unsafe accuracy gap.
 
 <p align="center">
-  <img src="assets/stepguard_overview.png" width="960" alt="AgentDoG-Step training pipeline: prefix-aligned SFT followed by Balance-GRPO calibration"/>
+  <img src="assets/stepguard_overview.png" width="960" alt="StepGuard training pipeline: prefix-aligned SFT followed by Balance-GRPO calibration"/>
 </p>
 
 ## 🤗 Model Zoo and Release Status
 
 | Artifact | Link | Status |
 |---|---|---|
-| AgentDoG-Step | [Hugging Face](https://huggingface.co/ninty-seven/AgentDoG-Step) | Released |
+| StepGuard | [Hugging Face](https://huggingface.co/ninty-seven/StepGuard) | Released |
 | SFT-3K / RL-4K corpus | -- | Planned |
 | StepGen data-generation engine | -- | Planned |
 
@@ -52,7 +54,7 @@ and unsafe-step localization.
 
 ### Safety evaluation
 
-AgentDoG-Step achieves the highest average accuracy among the evaluated
+StepGuard achieves the highest average accuracy among the evaluated
 open-weight guard models. Its trajectory-level average accuracy reaches
 **83.0**, matching GPT-5.4, while its step-level average accuracy reaches
 **84.8**, compared with **81.3** for GPT-5.4.
@@ -63,7 +65,7 @@ open-weight guard models. Its trajectory-level average accuracy reaches
 
 ### Guarded-agent evaluation
 
-When guarding agents on AgentDojo and AgentDyn, AgentDoG-Step lowers mean ASR
+When guarding agents on AgentDojo and AgentDyn, StepGuard lowers mean ASR
 from **23.15%** without a guard to **5.25%**—a **17.9-point absolute reduction**
 and a **77.3% relative reduction**—while mean utility decreases by only
 **2.8 points**. It also obtains a **3.4** malicious score on AgentHarm.
@@ -75,7 +77,7 @@ and a **77.3% relative reduction**—while mean utility decreases by only
 ## 📁 Repository Structure
 
 ```text
-AgentDoG-Step/
+StepGuard/
 ├── src/                    # Guard inference, prompts, evaluators, and agent loop
 ├── configs/                # Public static and dynamic evaluation templates
 ├── scripts/eval/           # Static and dynamic evaluation entry points
@@ -91,15 +93,15 @@ AgentDoG-Step/
 ### 1. Environment
 
 ```bash
-git clone https://github.com/zheng977/AgentDoG-Step.git
-cd AgentDoG-Step
+git clone https://github.com/zheng977/StepGuard.git
+cd StepGuard
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .[dev,serve]
 
 pip install "huggingface_hub[cli]"
-huggingface-cli download ninty-seven/AgentDoG-Step \
-  --local-dir "$PWD/artifacts/AgentDoG-Step"
+huggingface-cli download ninty-seven/StepGuard \
+  --local-dir "$PWD/artifacts/StepGuard"
 ```
 
 ### 2. Prepare Benchmark Data
@@ -121,7 +123,7 @@ python scripts/eval/run_eval_suite.py \
 ### 4. Run Static Evaluation
 
 ```bash
-export AGENTGUARD_MODEL_PATH="$PWD/artifacts/AgentDoG-Step"
+export AGENTGUARD_MODEL_PATH="$PWD/artifacts/StepGuard"
 CUDA_VISIBLE_DEVICES=0,1 \
   python scripts/eval/run_eval_suite.py \
   --config configs/eval_suites/static_core.example.yaml
@@ -173,11 +175,11 @@ inference and evaluation reproduction.
 ## 📄 Citation
 
 Citation metadata will be added with the public paper release. Until then,
-please cite the accompanying AgentDoG-Step paper and link to this repository.
+please cite the accompanying StepGuard paper and link to this repository.
 
 ## 🤝 Acknowledgements
 
-AgentDoG-Step uses [Qwen](https://github.com/QwenLM/Qwen),
+StepGuard uses [Qwen](https://github.com/QwenLM/Qwen),
 [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory), and
 [SLIME](https://github.com/THUDM/slime) as external training dependencies.
 The evaluation stack incorporates third-party benchmark resources documented
