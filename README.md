@@ -17,7 +17,7 @@
 
 - **[2026-08-25]** StepGuard is released with model weights, evaluation code,
   the training recipe, and the project page.
-- **[2026]** StepGuard is accepted to **EMNLP 2026**.
+- **[2026-08-21]** StepGuard is accepted to **EMNLP 2026**.
 
 <p align="center">
   <img src="assets/step_level_guarding_motivation.png" width="780" alt="Why a trajectory-level guard cannot intervene before an injected unsafe action"/>
