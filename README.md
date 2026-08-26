@@ -177,8 +177,19 @@ StepGuard/
 
 ## 📑 Citation
 
-Citation metadata will be added with the public paper release. Until then,
-please cite the accompanying StepGuard paper and link to this repository.
+If you find StepGuard useful, please cite our paper:
+
+```bibtex
+@misc{zheng2026stepguardlearningsteplevelguardrails,
+  title         = {StepGuard: Learning Step-Level Guardrails with Scalable Supervision and Safety-Utility Balancing},
+  author        = {Zhijie Zheng and Yu Li and Chen Qian and Yuqian Fu and Yanwei Fu and Lu Sheng and Jing Shao and Dongrui Liu},
+  year          = {2026},
+  eprint        = {2608.24777},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  url           = {https://arxiv.org/abs/2608.24777}
+}
+```
 
 ## 🤝 Acknowledgements
 
