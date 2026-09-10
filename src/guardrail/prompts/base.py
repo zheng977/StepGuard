@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from ag_types import Action, GuardrailContext, InteractionHistory, Observation
+from ag_types import Action, GuardrailContext, InteractionHistory, Observation, UserMessage
 
 
 DEFAULT_PROMPT_NAME = "stepguard"
@@ -242,6 +242,8 @@ def _serialize_history(history: InteractionHistory) -> str:
             parts.append(f"[agent] {_serialize_action(step)}")
         elif isinstance(step, Observation):
             parts.append(f"[environment] {step.content}")
+        elif isinstance(step, UserMessage):
+            parts.append(f"[user] {step.content}")
     return "\n".join(parts)
 
 
@@ -258,26 +260,20 @@ def _agentdog_serialize_trajectory(
     parts.append("=== Conversation History ===")
     parts.append(f"\n[USER]: {history.user_request}")
 
-    for step in history.steps:
+    for step in history.iter_trajectory(action):
         if isinstance(step, Action):
             agent_parts: list[str] = []
             if step.thought:
                 agent_parts.append(f"[THOUGHT]: {step.thought}")
             if step.raw_text:
                 agent_parts.append(f"[ACTION]: {step.raw_text}")
-            if agent_parts:
-                parts.append("\n[AGENT]:\n" + "\n".join(agent_parts))
+            else:
+                agent_parts.append(f"[ACTION]: {_serialize_action(step)}")
+            parts.append("\n[AGENT]:\n" + "\n".join(agent_parts))
         elif isinstance(step, Observation):
             parts.append(f"\n[ENVIRONMENT]: {step.content}")
-
-    # Append the candidate action (final action being evaluated)
-    agent_parts = []
-    if action.thought:
-        agent_parts.append(f"[THOUGHT]: {action.thought}")
-    if action.raw_text:
-        agent_parts.append(f"[ACTION]: {action.raw_text}")
-    if agent_parts:
-        parts.append("\n[AGENT]:\n" + "\n".join(agent_parts))
+        elif isinstance(step, UserMessage):
+            parts.append(f"\n[USER]: {step.content}")
 
     return "\n".join(parts)
 
@@ -366,6 +362,9 @@ def _guardian_serialize_history(history: InteractionHistory) -> str:
             else:
                 entries.append(f"[{idx}] tool result: {step.content}")
                 idx += 1
+        elif isinstance(step, UserMessage):
+            entries.append(f"[{idx}] user: {step.content}")
+            idx += 1
 
     return "\n".join(entries)
 
@@ -383,6 +382,8 @@ def _serialize_conversation_text(
             parts.append(f"[agent_action] {_serialize_action(step)}")
         elif isinstance(step, Observation):
             parts.append(f"[environment_observation] {step.content}")
+        elif isinstance(step, UserMessage):
+            parts.append(f"[user] {step.content}")
     parts.append(f"[current_action] {_serialize_action(action)}")
     if context and context.memory:
         parts.append(f"[environment_context] {json.dumps(context.memory, ensure_ascii=False)}")

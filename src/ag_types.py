@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Any, Literal, Optional, Union
+from typing import Any, Iterator, Literal, Optional, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 Paradigm = Literal["proactive", "predictive"]
@@ -30,21 +30,60 @@ class Observation(BaseModel):
     step: int = 0
 
 
-HistoryStep = Union[Action, Observation]
+class UserMessage(BaseModel):
+    """A follow-up instruction, kept distinct from environment observations."""
+
+    role: Literal["user"] = "user"
+    content: str
+
+
+HistoryStep = Union[Action, Observation, UserMessage]
 
 
 class InteractionHistory(BaseModel):
-    """H_t = (I, o_0, a_1, o_1, ..., o_{t-1})."""
+    """Context before the action under review, including follow-up users.
+
+    Completed trajectories can also have post-action events. Only trajectory
+    serializers consume those events; proactive action prompts must not.
+    """
 
     user_request: str
     initial_state: str = ""
     steps: list[HistoryStep] = Field(default_factory=list)
+    post_action_steps: list[Union[Observation, UserMessage]] = Field(default_factory=list)
+
+    @field_validator("steps", "post_action_steps", mode="before")
+    @classmethod
+    def _restore_message_types(cls, value: Any) -> Any:
+        # Older Pydantic 2.x union matching can accept message dictionaries as
+        # Actions with default fields. Restore users and observations explicitly
+        # so loading an archived trajectory preserves its roles and content.
+        if not isinstance(value, (list, tuple)):
+            return value
+        messages = []
+        for item in value:
+            if isinstance(item, dict):
+                if item.get("role") == "user":
+                    item = UserMessage.model_validate(item)
+                elif "content" in item:
+                    item = Observation.model_validate(item)
+            messages.append(item)
+        return messages
 
     def add_action(self, action: Action) -> None:
         self.steps.append(action)
 
     def add_observation(self, observation: Observation) -> None:
         self.steps.append(observation)
+
+    def add_user_message(self, message: UserMessage) -> None:
+        self.steps.append(message)
+
+    def iter_trajectory(self, action: Action) -> Iterator[HistoryStep]:
+        """Yield the complete record with the reviewed action exactly once."""
+        yield from self.steps
+        yield action
+        yield from self.post_action_steps
 
 
 class GuardrailContext(BaseModel):
