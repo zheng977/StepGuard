@@ -38,6 +38,8 @@ benchmarks:
 
   - name: rjudge
     benchmark: rjudge
+    # Must satisfy docs-open/evaluation.md#r-judge-input-contract.
+    # All conversation groups, user turns, and final-action feedback are retained.
     input: benchmarks/rjudge/test.json
     prompt_name: stepguard_traj
     response_parser: stepguard_traj

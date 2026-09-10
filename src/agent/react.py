@@ -4,7 +4,7 @@ import json
 import re
 from typing import Any, Optional
 
-from ag_types import Action, InteractionHistory, Observation
+from ag_types import Action, InteractionHistory, Observation, UserMessage
 from agent.base import BaseAgent
 from agent.prompts import REACT_SYSTEM_PROMPT
 from infer.base import BaseInferBackend
@@ -100,6 +100,8 @@ class ReactAgent(BaseAgent):
         for item in history.steps:
             if isinstance(item, Action):
                 msgs.append({"role": "assistant", "content": item.raw_text})
+            elif isinstance(item, UserMessage):
+                msgs.append({"role": "user", "content": item.content})
             else:
                 msgs.append({"role": "user", "content": f"Observation: {item.content}"})
         return msgs

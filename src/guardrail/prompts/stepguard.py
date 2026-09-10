@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 
-from ag_types import Action, GuardrailContext, InteractionHistory, Observation
+from ag_types import Action, GuardrailContext, InteractionHistory, Observation, UserMessage
 
 from .base import PromptProfile, _parse_safe_unsafe
 
@@ -129,6 +129,8 @@ def _serialize_history(history: InteractionHistory) -> str:
                 else "[ENVIRONMENT]:"
             )
             parts.append(f"{prefix} {step.content}")
+        elif isinstance(step, UserMessage):
+            parts.append(f"[USER]: {step.content}")
     return "\n\n".join(parts) if parts else "(no prior history)"
 
 
@@ -140,7 +142,7 @@ def _serialize_trajectory(history: InteractionHistory, action: Action) -> str:
 
     action_count = 0
     last_action_step: int | None = None
-    for step in history.steps:
+    for step in history.iter_trajectory(action):
         if isinstance(step, Action):
             action_count += 1
             step_id = int(step.step) if step.step else action_count
@@ -153,9 +155,8 @@ def _serialize_trajectory(history: InteractionHistory, action: Action) -> str:
                 else "\n[ENVIRONMENT]:"
             )
             parts.append(f"{prefix} {step.content}")
-
-    current_step = int(action.step) if action.step else action_count + 1
-    parts.append(f"\n[Step {current_step}] [AGENT]:\n{_render_action(action)}")
+        elif isinstance(step, UserMessage):
+            parts.append(f"\n[USER]: {step.content}")
     return "\n".join(parts)
 
 

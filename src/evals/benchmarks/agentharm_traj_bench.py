@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from ag_types import Action, GuardrailContext, InteractionHistory, Observation
+from ag_types import Action, GuardrailContext, InteractionHistory, Observation, UserMessage
 from evals.base import BaseBenchmarkAdapter, EvalCase, EvalRecord
 from evals.metrics import _compute_binary_metrics
 
@@ -113,8 +113,10 @@ def _try_parse_args(args_str: str) -> dict[str, Any]:
 class AgentHarmTrajBenchAdapter(BaseBenchmarkAdapter):
     """Adapter for trajectory benchmarks using AT-Bench-like ``contents`` format.
 
-    Works with AgentHarm, R-Judge, and similar datasets that store trajectories
-    as ``contents: [[{role, thought, action / content}, ...]]`` with labels.
+    Reads every conversation group in order, preserving follow-up user turns
+    and observations after the last agent action. Labels still apply to the
+    complete original record; groups are never scored as separate samples.
+    See docs-open/evaluation.md for the R-Judge input contract.
 
     Maps ``id`` -> ``conv_id``.  Trajectory-level binary classification.
     """
@@ -143,8 +145,34 @@ class AgentHarmTrajBenchAdapter(BaseBenchmarkAdapter):
 
     # ── Case building ────────────────────────────────────────────────
 
+    def _validated_conversation(self, raw_sample: dict[str, Any]) -> list[dict[str, Any]]:
+        if not isinstance(raw_sample, dict):
+            raise ValueError(f"{self.name}: each sample must be an object")
+        sample_id = raw_sample.get("id")
+        if sample_id is None:
+            sample_id = raw_sample.get("conv_id", "<unknown>")
+        prefix = f"{self.name} sample {sample_id!r}: "
+        contents = raw_sample.get("contents")
+        if not isinstance(contents, list) or not contents:
+            raise ValueError(prefix + "contents must be a non-empty list of conversation groups")
+        conv: list[dict[str, Any]] = []
+        for group_index, group in enumerate(contents):
+            if not isinstance(group, list) or not group:
+                raise ValueError(prefix + f"group {group_index} must be a non-empty list of turns")
+            for turn_index, turn in enumerate(group):
+                location = f"group {group_index}, turn {turn_index}"
+                if not isinstance(turn, dict):
+                    raise ValueError(prefix + f"{location} must be an object")
+                role = turn.get("role")
+                if role not in ("user", "agent", "environment"):
+                    raise ValueError(prefix + f"unsupported role {role!r} at {location}")
+                conv.append(turn)
+        if conv[0]["role"] != "user":
+            raise ValueError(prefix + "the first turn must have role 'user'")
+        return conv
+
     def _build_case(self, raw_sample: dict[str, Any]) -> EvalCase:
-        conv = raw_sample["contents"][0]
+        conv = self._validated_conversation(raw_sample)
         user_request = str(conv[0].get("content", ""))
 
         # Find last agent turn
@@ -180,6 +208,8 @@ class AgentHarmTrajBenchAdapter(BaseBenchmarkAdapter):
                         step=action_step,
                     )
                 )
+            elif role == "user":
+                history.add_user_message(UserMessage(content=str(turn.get("content", ""))))
 
         # Action = last agent turn
         action_step += 1
@@ -190,7 +220,22 @@ class AgentHarmTrajBenchAdapter(BaseBenchmarkAdapter):
             step=action_step,
         )
 
-        sample_id = str(raw_sample.get("id") or raw_sample.get("conv_id", ""))
+        # Keep completed-action feedback after the reviewed action. Moving it
+        # into history.steps would leak future information to proactive guards.
+        for turn in conv[last_agent_idx + 1:]:
+            if turn["role"] == "environment":
+                history.post_action_steps.append(
+                    Observation(content=str(turn.get("content", "")), step=action_step)
+                )
+            else:  # The final agent action was selected above; only users remain.
+                history.post_action_steps.append(
+                    UserMessage(content=str(turn.get("content", "")))
+                )
+
+        sample_id = raw_sample.get("id")
+        if sample_id is None:
+            sample_id = raw_sample.get("conv_id", "")
+        sample_id = str(sample_id)
 
         context = GuardrailContext(
             available_tools=None,
