@@ -5,6 +5,7 @@
 <p align="center">
   🌐 <a href="https://zheng977.github.io/StepGuard/">Project Page</a>
   &nbsp;|&nbsp; 🤗 <a href="https://huggingface.co/ninty-seven/StepGuard">Model</a>
+  &nbsp;|&nbsp; 📊 <a href="https://huggingface.co/datasets/ninty-seven/stepguard_data">Data</a>
   &nbsp;|&nbsp; 💻 <a href="https://github.com/zheng977/StepGuard">Code</a>
 </p>
 
@@ -15,6 +16,9 @@
 
 ## 🔥 News
 
+- **[2026-09-22]** We release [**StepGuard-Data**](https://huggingface.co/datasets/ninty-seven/stepguard_data),
+  the final training corpus with **3,000 SFT** and **4,000 RL** examples for
+  action-level guarding and trajectory-level auditing.
 - **[2026-08-25]** StepGuard is released with model weights, evaluation code,
   the training recipe, and the project page.
 - **[2026-08-21]** StepGuard is accepted to **EMNLP 2026**.
@@ -42,7 +46,7 @@
 | Artifact | Link | Status |
 |---|---|---|
 | **StepGuard-4B** | [ninty-seven/StepGuard](https://huggingface.co/ninty-seven/StepGuard) | ✅ Released |
-| SFT-3K / RL-4K corpus | -- | Planned |
+| SFT-3K / RL-4K corpus | [StepGuard-Data](https://huggingface.co/datasets/ninty-seven/stepguard_data) | ✅ Released |
 | StepGen data-generation engine | -- | Planned |
 
 ## 📊 Main Results
@@ -146,9 +150,10 @@ LLaMA-Factory and SLIME remain external dependencies. The SFT launcher,
 Balance-GRPO implementation, SLIME adapter, and hyperparameter recipe are in
 `training/release/`.
 
-The final SFT-3K/RL-4K corpus and StepGen data-generation engine are planned
-for a subsequent release. Until then, the released checkpoints support full
-inference and evaluation reproduction.
+The final **SFT-3K/RL-4K training corpus** is available as
+[StepGuard-Data](https://huggingface.co/datasets/ninty-seven/stepguard_data),
+with separate `sft3k` and `rl4k` subsets, loading examples, and sampling manifests.
+The StepGen data-generation engine is planned for a subsequent release.
 
 ## 📚 Documentation
 
