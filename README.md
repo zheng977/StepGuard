@@ -204,3 +204,9 @@ StepGuard uses [Qwen](https://github.com/QwenLM/Qwen),
 The evaluation stack incorporates third-party benchmark resources documented
 in [benchmark-repos/UPSTREAM.md](benchmark-repos/UPSTREAM.md). Please follow
 the corresponding upstream licenses and terms when using those assets.
+
+## License
+
+StepGuard's original code, prompt templates, and documentation are licensed under the [Apache License 2.0](LICENSE). Commercial use, self-hosted deployment for an organisation's own agents, modification of the prompt templates, and redistribution are permitted under its terms. No research-only or non-commercial restriction is imposed on these StepGuard materials.
+
+Third-party components retain their own licenses; the root license does not replace them. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), including the separate AgentHarm benchmark terms. The [model weights](https://huggingface.co/ninty-seven/StepGuard) and [training dataset](https://huggingface.co/datasets/ninty-seven/stepguard_data) have license files in their respective repositories.
